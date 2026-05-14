@@ -1,36 +1,9 @@
 import game_state
 from entities.treasure import Treasure
 from entities.enemy import Enemy
+from maze_generator import build_level
 
-level_1 = [
-    "XXXXXXXXXXXXXXXXXXXXXXXXX",
-    "XP XXXXXXX          XXXXX",
-    "X  XXXXXXX  XXXXXX  XXXXX",
-    "X       XX  XXXXXX  XXXXX",
-    "X       XX  XXX        XX",
-    "XXXXXX  XX  XXX   T    XX",
-    "XXXXXX  XX  XXXXXX  XXXXX",
-    "XXXXXX  XX    XXXX  XXXXX",
-    "X  XXX        XXXX  XXXXX",
-    "X  XXX  XXXXXXXXXXXXXXXXX",
-    "X  T      XXXXXXXXXXXXXXX",
-    "X                XXXXXXXX",
-    "XXXXXXXXXXXX     XXXXX  X",
-    "XXXXXXXXXXXXXXX  XXXXX  X",
-    "XXXT XXXXXXXXXX      T  X",
-    "XXX                     X",
-    "XXX         XXXXXXXXXXXXX",
-    "XXXXXXXXXX  XXXXXXXXXXXXX",
-    "XXXXXXXXXX             TX",
-    "XX   XXXXX              X",
-    "XX   XXXXXXXXXXXX  XXXXXX",
-    "XX    TXXXXXXXXXX  XXXXXX",
-    "XX         XXXX        TX",
-    "XXXXE                   X",
-    "XXXXXXXXXXXXXXXXXXXXXXXXX",
-]
-
-levels = ["", level_1]
+levels = ["", build_level()]
 
 def setup_maze(level):
     for y in range(len(level)):

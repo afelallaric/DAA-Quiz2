@@ -49,7 +49,6 @@ turtle.onkey(game_state.player.go_right, "Right")
 
 wn.tracer(0)
 
-# Main game loop
 while True:
     for treasure in game_state.treasures[:]:
         if game_state.player.is_collision(treasure):
