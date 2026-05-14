@@ -1,6 +1,9 @@
 import math
 import turtle
+import heapq
 from collections import deque
+
+Algorithm = "bfs"
 
 wn = turtle.Screen()
 wn.bgcolor("black")
@@ -98,7 +101,54 @@ class Enemy(turtle.Turtle):
         self.speed(0)
         self.goto(x, y)
         self.path = []       
-        self.move_index = 0    
+        self.move_index = 0
+
+    def chooseAlgorithm(self, start, finish):
+        if Algorithm == "dijkstra":
+            return Enemy.dijkstra(self, start, finish)
+        elif Algorithm == "dfs":
+            return Enemy.dfs(self, start, finish)
+        elif Algorithm == "bfs":
+            return Enemy.bfs(self, start, finish)
+        else:
+            print("Algorithm not found")
+            return None
+
+    def dijkstra(self,start, finish):
+        pq = [(0, start, [start])]
+        visited = set()
+
+        while pq:
+            cost, current, path = heapq.heappop(pq)
+
+            if current == finish:
+                return path
+            if current in visited:
+                continue
+            visited.add(current)
+
+            neighbours = get_neighbours(current)
+            for neighbour in neighbours:
+                if neighbour not in visited:
+                    heapq.heappush(pq, (cost + 1, neighbour, path + [neighbour]))
+
+    def dfs(self, start, finish):
+        stack = [(start, [start])]
+        visited = set()
+
+        while stack:
+            current, path = stack.pop() # Ambil value paling depan di queue
+
+            if current == finish:
+                return path               
+            if current in visited:
+                continue               
+            visited.add(current)
+
+            neighbours = get_neighbours(current)
+            for neighbour in neighbours:
+                if neighbour not in visited:
+                    stack.append((neighbour, path + [neighbour]))
 
     def bfs(self, start, finish): 
         queue = deque([(start, [start])]) # Berisi {(posisi tile, path menuju posisi tersebut), (posisi tile, path menuju posisi tersebut), dst)}
@@ -121,12 +171,12 @@ class Enemy(turtle.Turtle):
     def set_path(self):
         start = (self.xcor(), self.ycor())
         finish = (player.xcor(), player.ycor())
-        self.path = self.bfs(start, finish)  
+        self.path = self.chooseAlgorithm(start, finish)  
 
     def reset_path(self):
         start = (self.xcor(), self.ycor())
         finish = (player.xcor(), player.ycor())
-        self.path = self.bfs(start, finish)
+        self.path = self.chooseAlgorithm(start, finish)
         self.move_index = 1
 
     def move(self):
@@ -233,6 +283,28 @@ def get_neighbours(pos):
 
 
 #Set up the level
+options = ['dijkstra', 'dfs', 'bfs']
+input_message = "Pick an algorithm:\n" 
+
+for index, item in enumerate(options):
+  input_message += f'{index + 1}) {item}\n'
+
+input_message += 'Your choice (enter number or name): '
+
+Algorithm = input(input_message)
+if Algorithm == "1":
+    Algorithm = "dijkstra"
+elif Algorithm == "2":
+    Algorithm = "dfs"
+elif Algorithm == "3":
+    Algorithm = "bfs"
+else:
+    print("Invalid choice. Please try again.")
+    exit()
+
+
+
+
 setup_maze(levels[1])
 
 #Start enemy movement
